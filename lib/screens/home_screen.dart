@@ -133,7 +133,7 @@ class TodoHomePageState extends State<TodoHomePage> {
           if (index == _tasks.length) {
             // Return an empty transparent tile
             return Container(
-              key: ValueKey('extra_tile'), // Assign a unique key to the extra tile
+              key: const ValueKey('extra_tile'), // Assign a unique key to the extra tile
               height: 80, // Height of the transparent tile
               color: Colors.transparent,
             );
