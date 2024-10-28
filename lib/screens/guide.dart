@@ -11,8 +11,9 @@ class Guide extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('User Guide'),
+        title: const Text('User Guide', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.black,
+        iconTheme: const IconThemeData(color: Colors.white), // Sets the back button to white
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -60,7 +61,6 @@ class Guide extends StatelessWidget {
     );
   }
 
-  // Helper method to build each guide section with title, description, and image
   Widget buildGuideSection({
     required String title,
     required String description,
@@ -68,26 +68,32 @@ class Guide extends StatelessWidget {
     required TextStyle textStyle,
     required TextStyle detailTextStyle,
   }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: textStyle),
-          const SizedBox(height: 8),
-          Text(description, style: detailTextStyle),
-          const SizedBox(height: 16),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title, style: textStyle),
+        const SizedBox(height: 8),
+        Text(description, style: detailTextStyle),
+        const SizedBox(height: 16),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.white, width: 2), // Adds white border
+            borderRadius: BorderRadius.circular(10),  // Optional: rounded corners
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),  // Ensures image follows container shape
             child: Image.asset(
               imagePath,
               width: double.infinity,
-              height: 200, // Adjust height as necessary
-              fit: BoxFit.cover,
+              height: 200,
+              fit: BoxFit.contain,
             ),
           ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 16),
+        const Divider(color: Colors.white54, thickness: 1.5),  // Adds a divider line between sections
+        const SizedBox(height: 16),
+      ],
     );
   }
 }

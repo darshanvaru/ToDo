@@ -22,3 +22,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/9264822.jpg
+    - assets/drag_task.png
+    - assets/tick_task.png
+    - assets/delete_task.png
+    - assets/edit_task.png
+    - assets/add_task.png

@@ -48,9 +48,19 @@ class TodoHomePageState extends State<TodoHomePage> {
   void _toggleTaskCompletion(int index) {
     setState(() {
       _tasks[index].completed = !_tasks[index].completed;
+      final task = _tasks.removeAt(index);
+
+      // If task is completed, add it at the end; otherwise, add it at the top
+      if (task.completed) {
+        _tasks.add(task);
+      } else {
+        _tasks.insert(0, task);
+      }
+
       _taskService.updateTask(_tasks);
     });
   }
+
 
   void _deleteTask(int index) {
     setState(() {
@@ -127,17 +137,9 @@ class TodoHomePageState extends State<TodoHomePage> {
         ),
       )
           : ReorderableListView.builder(
-        itemCount: _tasks.length + 1, // Add one extra item for the transparent tile
+        itemCount: _tasks.length, // Add one extra item for the transparent tile
         onReorder: _moveTask,
         itemBuilder: (context, index) {
-          if (index == _tasks.length) {
-            // Return an empty transparent tile
-            return Container(
-              key: const ValueKey('extra_tile'), // Assign a unique key to the extra tile
-              height: 80, // Height of the transparent tile
-              color: Colors.transparent,
-            );
-          }
           return TaskTile(
             key: ValueKey(_tasks[index].title),  // Ensure each TaskTile has a unique key, based on the task
             task: _tasks[index],
