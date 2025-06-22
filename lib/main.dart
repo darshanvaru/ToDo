@@ -11,7 +11,7 @@ class TodoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      title: 'ToDo List',
+      title: 'ToDo Tasks',
       debugShowCheckedModeBanner: false,
       home: TodoHomePage(),
     );

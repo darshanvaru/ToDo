@@ -23,6 +23,7 @@ class TodoHomePageState extends State<TodoHomePage> {
     _taskService.init().then((_) => _loadTasks());
   }
 
+  // load task list from task service
   Future<void> _loadTasks() async {
     List<Task> tasks = await _taskService.loadTasks();
     setState(() {
@@ -30,6 +31,7 @@ class TodoHomePageState extends State<TodoHomePage> {
     });
   }
 
+  // Adding task
   void _addTask(String title, String description) {
     setState(() {
       _tasks.add(Task(title: title, description: description));
@@ -37,6 +39,7 @@ class TodoHomePageState extends State<TodoHomePage> {
     });
   }
 
+  //editing an existing task
   void _editTask(int index, String title, String description) {
     setState(() {
       _tasks[index].title = title;
@@ -45,6 +48,7 @@ class TodoHomePageState extends State<TodoHomePage> {
     });
   }
 
+  //toggling checkbox of a task
   void _toggleTaskCompletion(int index) {
     setState(() {
       _tasks[index].completed = !_tasks[index].completed;
@@ -61,7 +65,7 @@ class TodoHomePageState extends State<TodoHomePage> {
     });
   }
 
-
+  //deleting a task
   void _deleteTask(int index) {
     setState(() {
       _tasks.removeAt(index);
@@ -69,6 +73,7 @@ class TodoHomePageState extends State<TodoHomePage> {
     });
   }
 
+  //dragging a task
   void _moveTask(int oldIndex, int newIndex) {
     setState(() {
       if (newIndex > oldIndex) newIndex--;
@@ -78,6 +83,7 @@ class TodoHomePageState extends State<TodoHomePage> {
     });
   }
 
+  // adding and editing dialog box
   Future<void> _showTaskDialog({int? index}) async {
     await showTaskDialog(
       context: context,
@@ -97,12 +103,16 @@ class TodoHomePageState extends State<TodoHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      //appbar
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text('ToDo List', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         elevation: 5,
         shadowColor: Colors.grey,
         actions: [
+
+          //Guide button
           IconButton(
             icon: const Icon(Icons.help_outline, color: Colors.white),
             onPressed: () {
@@ -115,43 +125,56 @@ class TodoHomePageState extends State<TodoHomePage> {
           ),
         ],
       ),
-      body: _tasks.isEmpty
-          ? Center(
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/9264822.jpg',
-                fit: BoxFit.contain,
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: MediaQuery.of(context).size.height * 0.4,
-              ),
-              const Text(
-                "No tasks available to show. Add new tasks!",
-                style: TextStyle(color: Colors.black, fontSize: 20),
-              ),
-            ],
-          ),
-        ),
-      )
-          : ReorderableListView.builder(
-        itemCount: _tasks.length, // Add one extra item for the transparent tile
-        onReorder: _moveTask,
-        itemBuilder: (context, index) {
-          return TaskTile(
-            key: ValueKey(_tasks[index].title),  // Ensure each TaskTile has a unique key, based on the task
-            task: _tasks[index],
-            onCompleteChanged: () => _toggleTaskCompletion(index),
-            onEdit: () => _showTaskDialog(index: index),
-            onDelete: () => _deleteTask(index),
-            dragIcon: const Icon(Icons.drag_indicator, color: Colors.grey),
-          );
-        },
-      ),
 
-      backgroundColor: const Color(0xFDFDFDFF),
+      //body
+      body:
+      _tasks.isEmpty
+      // Empty task array
+        ? Center(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+
+                //Image of empty list
+                Image.asset(
+                  'assets/9264822.jpg',
+                  fit: BoxFit.contain,
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: MediaQuery.of(context).size.height * 0.4,
+                ),
+
+                //text for empty list
+                const Text(
+                  "No tasks available to show. Add new tasks!",
+                  style: TextStyle(color: Colors.black, fontSize: 20),
+                ),
+              ],
+            ),
+          ),
+        )
+
+            //Reorderable list view
+        : ReorderableListView.builder(
+          itemCount: _tasks.length,
+          onReorder: _moveTask,
+          itemBuilder: (context, index) {
+            return TaskTile(
+              key: ValueKey(_tasks[index].title),
+              task: _tasks[index],
+              onCompleteChanged: () => _toggleTaskCompletion(index),
+              onEdit: () => _showTaskDialog(index: index),
+              onDelete: () => _deleteTask(index),
+              dragIcon: const Icon(Icons.drag_indicator, color: Colors.grey),
+            );
+          },
+        ),
+
+      //Background color of body
+      backgroundColor: const Color(0xFFFFFFFF),
+
+      //fab
       floatingActionButton: Container(
         height: 70,
         width: 70,
